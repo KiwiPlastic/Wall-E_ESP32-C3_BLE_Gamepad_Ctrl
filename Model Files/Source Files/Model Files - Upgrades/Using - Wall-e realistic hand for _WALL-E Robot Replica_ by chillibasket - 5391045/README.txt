@@ -1,0 +1,4 @@
+Wall-e realistic hand for "WALL-E Robot Replica" by chillibasket by Wujek_k on Thingiverse: https://www.thingiverse.com/thing:5391045
+
+Summary:
+Wall-e hands for for "WALL-E Robot Replica" by chillibasket.They fit to original for "WALL-E Robot Replica" by chillibasket and are scaled to fit "sockets" in Wall-e body, no changes to original model are needed.Print two copies, drill holes to the required dimension (1.8 for fingers hinges), use support.Each finger can be moved separately and the thumb is mounted on the sphere pivot what allows to move it in any desired position.For hinges axles use filament, cut to dimenstion +1mm on each side, melt it using soldering iron or just a torch and flatten it with any cold metal object.Print, assemble, paint, mount to Wall-e using glue.
