@@ -114,7 +114,7 @@ It will be fixed in newer version releases, so this edit will not always be requ
     RED PB - Play Prev 
     GRN PB - Play Next
     ORG PB – Autonomous Servos On/Off 
-    WHT PB – Door Open/Close
+    WHT PB – Bay Door Open/Close
     
 ### BLE Gamepad - Xbox controler - Button Map :-
     Tracks turn left/right  	Left Stick X (hoz)      
@@ -126,9 +126,9 @@ It will be fixed in newer version releases, so this edit will not always be requ
     Lhs Eyebrow             	Button X + Dpad Left/Right
     Rhs Eye                 	Button B + Dpad Up/Dwn
     Rhs Eyebrow             	Button B + Dpad Left/Right
-    Door Open/Close         	Button Y + Dpad Left Right
-    Left Arm               	 Left Trigger  + Dpad Up/Dwn
-    Right Arm              	 Right Trigger + Dpad Up/Dwn
+    Bay Door Open/Close      	Button Y + Dpad Left Right
+    Left Arm               	  Left Trigger  + Dpad Up/Dwn
+    Right Arm              	  Right Trigger + Dpad Up/Dwn
     Play Sound              	Left Bumper + Dpad Left/Right - can crash
     Motor dead zone         	Left Bumper + Dpad Up/Dwn - 0 to 250
     LEDS move               	Right Bumper + Dpad Left/Right - loop x 4
