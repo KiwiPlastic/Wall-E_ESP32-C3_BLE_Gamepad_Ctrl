@@ -1,4 +1,4 @@
-# Wall-E ESP32-C3 using BLE Game Controller
+# Wall-E ESP32-C3 with BLE Game Controller (Xbox controler)
 Thie is an upgrade on the Wall-E project developed by by Chillbasket
 
 ![Walle-E Chillibasket](https://github.com/KiwiPlastic/Wall-E_ESP32-C3_BLE_Gamepad_Ctrl/blob/main/Images/Chillibasket1.jpg?raw=true)
