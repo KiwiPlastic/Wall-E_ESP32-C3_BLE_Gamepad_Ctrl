@@ -27,6 +27,9 @@ Thie is an upgrade on the Wall-E project developed by by Chillbasket
 - The only changed one is the top cover to accomidate pushbuttons
 
 ## 📦 Installation
+•	Wall-E Assembly Instructions and Videos by Chillbasket (https://wired.chillibasket.com/3d-printed-wall-e/) 
+
+
 ```bash
 git clone https://github.com
 cd project-name
