@@ -91,8 +91,10 @@ Use common Cathod 10mm RGB LED
     - Test and go for gold
     - Note: Theres no Battery monitor in this code. Use a Li-Po battery monitor/buzzer on Li-Po monitor plug 
 
-
-
+<img width="591" height="444" alt="image" src="https://github.com/user-attachments/assets/9866b3a2-0881-4ab2-98a3-da6f81b261cc" />
+<img width="596" height="446" alt="image" src="https://github.com/user-attachments/assets/b4e575be-7335-424b-b01d-1f6c7c4178b7" />
+<img width="537" height="716" alt="image" src="https://github.com/user-attachments/assets/2d542942-494d-4c33-a97c-e5f0b9f9c0b5" />
+<img width="715" height="536" alt="image" src="https://github.com/user-attachments/assets/bef63678-cfd8-4655-83e4-620f541ff4cb" />
 
 ### Arduino IDE will require these library's
     - BLE-Game_Client by Tomaz bekas V0.12.1
