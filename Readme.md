@@ -82,6 +82,7 @@ Use common Cathod 10mm RGB LED
     - Silicon from (Starlink Installations) is useful on these joints
     - Power up PSU and adjust Bucks to 5v, 6v and 2v BEFORE connecting to main loom
     - Wire up loom and electronics, then test before securing to 3d prints
+    - glue electronics floor brakets so floor is level with top of Bay door opening
     - Secure electronics to 3d prints
     - Power up with no Motor or Servo loads, test buttons, leds, oled, MP3 player, xbox controller is working
     - Connect servos and put calibration firmware in ESP32 and perform calibration (https://wired.chillibasket.com/3d-printed-wall-e/)
