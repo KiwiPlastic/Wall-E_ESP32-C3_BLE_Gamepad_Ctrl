@@ -10,19 +10,20 @@
  * HOW TO USE:
  * 1. Install the following library's
  *    In the Arduino IDE, on the left, click the libary manager icon
- *    BLE-Game_Client by Tomaz bekas V0.12.1
- *    ESP_Software_Serial by Dirk Kaar SNDVAPS 8.3.1
- *    Adafruit SSD1306 by Adfruit v2.5.17
- *    Adafruit PWM Servo Driver lib by Adfruit v 3.03 
- *    Adafruit PCF8574 by Adfruit v 1.1.2
- *    DFRobotDFPlayerMini by DFRobot v1.0.6
- *    I2C Wire driver, Could be built in to IDE 
+ *       BLE-Game_Client by Tomaz bekas V0.12.1
+ *       ESP_Software_Serial by Dirk Kaar SNDVAPS 8.3.1
+ *       Adafruit SSD1306 by Adfruit v2.5.17
+ *       Adafruit PWM Servo Driver lib by Adfruit v 3.03 
+ *       Adafruit PCF8574 by Adfruit v 1.1.2
+ *       DFRobotDFPlayerMini by DFRobot v1.0.6
+ *       I2C Wire driver, Could be built in to IDE 
  *    
  * 2. Calibrate the servo motors, using the calibration sketch provided in the
- *    GitHub repository. Paste the calibrated values between lines 369 to 391.
+ *    GitHub repository. Paste the calibrated values between lines 296 to 305.
  * 3. Upload the sketch to the micro-controller, and open the serial monitor 
  *    at a baud rate of 115200.
- * 4. Additional instructions and hints can be found at:
+ * 4. Turn Game Pad on, should automaticaly enrol
+ * 5. Additional instructions and hints can be found at:
  *    https://wired.chillibasket.com/3d-printed-wall-e/
  *
  * * * * * * * * * * * * * * * * * * * * * * *
