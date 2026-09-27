@@ -1,4 +1,4 @@
-#define VERSION 5.0  // 23-7-26 
+#define VERSION 6.0  // 23-9-26
 /* * * * * * * * * * * * * * * * * * * * * * *
  *
  * Upgraded Code by:  Richard Nicholson
@@ -19,50 +19,59 @@
  *      DFRobotDFPlayerMini by DFRobot v1.0.6
  *      I2C Wire driver, Could be built in to IDE 
  *    
- * 2. Calibrate the servo motors, using the calibration sketch provided in the
- *    GitHub repository. Paste the calibrated values between lines 296 to 305.
- * 3. Upload the sketch to the micro-controller, and open the serial monitor 
+ * 2. Updload the Calibrate.ino sketch and calibrate the servo motors
+ *    Copy and Paste the output from Calibration, into Wall-E code between lines 296 to 305.
+ 8      Additional instructions and hints can be found at:
+ *      https://wired.chillibasket.com/3d-printed-wall-e/
+ *
+ * 3. Upload the Wall-E sketch to the ESP32C3, and open the serial monitor 
  *    at a baud rate of 115200.
- * 4. Turn Game Pad on, should automaticaly enrol
- * 5. Additional instructions and hints can be found at:
- *    https://wired.chillibasket.com/3d-printed-wall-e/
+ *
+ * 4. Turn Game Pad on, should automaticaly enrol, will display on LCD and serial monitor
  *
  * * * * * * * * * * * * * * * * * * * * * * *
 
 NOTE: BLE Controler should be OFF on Wall-E Power up, else DFPlayer might not start
  
   // BLE Gamepad - Xbox controler - button map
-    Tracks turn left/right  Left Stick X (hoz)      
-    Tracks forward/back     Left Stick Y (Vert) 
-    Head rotation           Right Stick X
-    Head Up/Down            Right Stick Y
-    Neck Bottom             Button A + Dpad Up/Dwn
-    Lhs Eye                 Button X + Dpad Up/Dwn
-    Lhs Eyebrow             Button X + Dpad Left/Right
-    Rhs Eye                 Button B + Dpad Up/Dwn
-    Rhs Eyebrow             Button B + Dpad Left/Right
-    Door Open/Close         Button Y + Dpad Left Right
-    Left Arm                Left Trigger  + Dpad Up/Dwn
-    Right Arm               Right Trigger + Dpad Up/Dwn
-    Play Sound              Left Bumper + Dpad Left/Right - can crash
-    Motor dead zone         Left Bumper + Dpad Up/Dwn - 0 to 250
-    LEDS move               Right Bumper + Dpad Left/Right - loop x 4
-    Steering Offset         Right Bumper + Dpad Up/Dwn -  -100 to 100
-    Animation Number        ViewButton +  Dpad Up/Dwn
-    Automonus Servo Mode    MenuButton On/Off toggel
+    Tracks turn left/right  Right Stick X (hoz)      
+    Tracks forward/back     Right Stick Y (Vert) 
+
+    Head rotation           Left Stick X
+    Head Bottom             Right Stick Y
+    Neck Top                Button A + Left Stick Y
+    Lhs Eye                 Button X + Left Stick y
+    Rhs Eye                 Button B + Left Stick y
+    
+    Left Arm                Left Trigger  + Left Stick y
+    Right Arm               Right Trigger + Left Stick y
+
+    Lhs Eyebrow             Left Bumper On = brow up
+    Rhs Eyebrow             Right Bumper On = brow up
+
+    Door Open/Close         Button Y toggel
+    Play Sound              LTrigger + RTrigger + Dpad Up/Dwn
+    Motor dead zone         ViewButton + Dpad Up/Dwn - 0 to 250
+    Steering Offset         ShareButton + Dpad Up/Dwn -  -100 to 100
+    Animation Number        MenuButton +  Dpad Up/Dwn
+    Automonus Servo Mode    Right Stick PB On/Off toggel
+
     Dpad Up                 adjust up
     Dpad Down               adjust down
     Dpad Left               adjust left
     Dpad Right              adjust right
+
     Left Stick Button
-    Right Stick Button
+    Right Stick Button      Automonus Mode On/Off toggel
+    ViewButton
+    MenuButton
     ShareButton
     XboxButton
 
  // LED Push Buttons on Front
-    RED_PB = Play Prev
-    GRN_PB = PlaY Next
-    ORG_PB = Autonomus Servos On/Off
+    RED_PB = Play Previous
+    GRN_PB = PlaY
+    ORG_PB = Play Next
     WHT_PB = Door Open/Close
 
  //  CLI
@@ -111,6 +120,9 @@ NOTE: BLE Controler should be OFF on Wall-E Power up, else DFPlayer might not st
     7 Eye Brow Right
     8 Eye Brow Left
     9 Door
+    10
+    11
+    12
     13 RED RGB LED
     14 GRN RGB LED
     15 BLU RGB LED
@@ -152,16 +164,28 @@ NOTE: BLE Controler should be OFF on Wall-E Power up, else DFPlayer might not st
 // pinMode(LED_BUILTIN, OUTPUT);  // Config Built in Led as an output. NOT avaliable ON C3
 
 // PCF8575 I2C I/O Expander
-#define PIN_RED_PB 0     // input
-#define PIN_GRN_PB 1     // in
-#define PIN_ORG_PB 2     // in
-#define PIN_WHT_PB 3     // in
-#define PIN_DFP_BUSY 4   // in
-#define PIN_WHT_LED 8    // out
-#define PIN_ORG_LED 9    // out
-#define PIN_GRN_LED 10   // out
-#define PIN_RED_LED 11   // out
-#define PIN_BAY_LED 12   // out outout is active low mosfet is active high HIGH = mosfte on
+#define PIN_RED_PB 0    // input
+#define PIN_GRN_PB 1    // in
+#define PIN_ORG_PB 2    // in
+#define PIN_WHT_PB 3    // in
+#define PIN_DFP_BUSY 4  // in
+#define PIN_WHT_LED 8   // PB out
+#define PIN_ORG_LED 9   // PB out
+#define PIN_GRN_LED 10  // PB out
+#define PIN_RED_LED 11  // PB out
+#define PIN_BAY_LED 12  // outout is active low, Mosfet is active high. HIGH = Mosfet on
+
+// Servo Default poistions 0 - 100
+#define S0_HEAD_DPOS 50     // Servo 0 Head Rotation Center
+#define S1_NECKT_DPOS 50    // Servo 1 Neck Top
+#define S2_NECKB_DPOS 50    // Servo 2 Neck Bottom
+#define S3_EYE_RHS_DPOS 50  // Servo eye RHS
+#define S4_EYE_LHS_DPOS 50  // Servo eye LHS
+#define S5_ARM_LHS_DPOS 50  // Servo Arm LHS
+#define S6_ARM_RHS_DPOS 50  // Servo Arm RHS
+#define S7_EYEB_RHS_DPOS 0  // Servo Eye Brow LHS Closed
+#define S8_EYEB_LHS_DPOS 0  // Servo Eye Brow RHS Closed
+#define S9_DOOR_DPOS 80     // Servo Door 0 = open, 100 closed
 
 // PWM RGB LED channels on the PCA9685 16 Ch PWM module
 #define RED_CHANNEL 13
@@ -179,6 +203,7 @@ NOTE: BLE Controler should be OFF on Wall-E Power up, else DFPlayer might not st
 #define NORMAL_SPEED 1  // These are the playback speeds, change to
 #define FAST_SPEED 1.5  // see the effect on the sound sample. 1 is default speed
 #define SLOW_SPEED 2    // 0.75  // >1 faster, <1 slower, 2 would be twice as fast, 0.5 half as fast
+#define PLAYFILES 17    // number of files on SD card
 
 // Define other constants
 #define NUMBER_OF_SERVOS 10      // Number of servo motors, 7 without eyelids, 9 with, plus door is 10
@@ -192,24 +217,14 @@ NOTE: BLE Controler should be OFF on Wall-E Power up, else DFPlayer might not st
 #define ONESEC 1000              // One second dah
 #define DISPLAY_IDEAL_TIME 5000  // display ideal 5 sec then home screen
 #define OLED_ADDR 0x3C           //
-#define LSTICK_DZ_Xmax 0.05      // Left Stick Dead Zone X Max...
-#define LSTICK_DZ_Xmin -0.05     //
-#define LSTICK_DZ_Ymax 0.05      //
-#define LSTICK_DZ_Ymin -0.05     //
-#define RSTICK_DZ_Xmax 0.05      // Right Stick Dead Zone...
-#define RSTICK_DZ_Xmin -0.05     //
-#define RSTICK_DZ_Ymax 0.05      //
-#define RSTICK_DZ_Ymin -0.05     //
-#define S0_HEAD_DPOS 50          // Servo 0 Head Defualt Position
-#define S1_NECKT_DPOS 55         // Servo 1 Neck Top
-#define S2_NECKB_DPOS 50         // Servo 2 Neck Bottom
-#define S3_EYE_RHS_DPOS 50       // Servo eye RHS
-#define S4_EYE_LHS_DPOS 50       // Servo eye LHS
-#define S5_ARM_LHS_DPOS 50       // Servo Arm LHS
-#define S6_ARM_RHS_DPOS 50       // Servo Arm RHS
-#define S7_EYEB_RHS_DPOS 50      // Servo Eye Brow LHS
-#define S8_EYEB_LHS_DPOS 50      // Servo Eye Brow RHS
-#define S9_DOOR_DPOS 50          // Servo Door
+#define LSTICK_DZ_Xmax 5         // Left Stick Dead Zone X Max...
+#define LSTICK_DZ_Xmin -5        //
+#define LSTICK_DZ_Ymax 5         // Left Stick Dead Zone Y Max...
+#define LSTICK_DZ_Ymin -5        //
+#define RSTICK_DZ_Xmax 5         // Right Stick Dead Zone...
+#define RSTICK_DZ_Xmin -5        //
+#define RSTICK_DZ_Ymax 5         //
+#define RSTICK_DZ_Ymin -5        //
 
 // OLED Display
 SSD1306AsciiWire Oled;
@@ -236,9 +251,13 @@ uint8_t SpeedIdx = 0;    // In effect when the checks in the main loop are made 
 
 // Sound Variables DFPlayer
 bool soundPlaying = false;  //
-bool isSound = true;        // Assume sound effects are available. Not realy used
+bool playSoundTrigger = false;
+bool isSound = true;          // Assume sound effects are available. Not realy used
+bool playFilePBFlag = false;  // BLE_Gamepad.ino button down
 uint8_t playIndex = 2;
+uint8_t playIndexTotal = PLAYFILES;
 uint8_t lastplayIndex = 2;
+
 
 // Create Serial comms and DFPlayer
 //HardwareSerial mySerial(1);  // Use UART1, this did not work with xbox
@@ -277,11 +296,13 @@ bool autoModeFlag = false;
 unsigned long autonomousModeTimer;  //for 1 sec led display
 unsigned long LastBlinkLED;
 bool stat_LED = false;
-unsigned long displaytime;
-unsigned long doorTime;
-bool doorMode = false;  // BLE interlock
+unsigned long displaytime = 0;
+unsigned long doorTimer;
+unsigned long debounceTimer;
+bool doorMode = true;  // BLE interlock
 bool doorFlag = false;
 bool BLE_Conected_Flag = false;
+
 uint8_t ledIndex = 0;  // PB Leds on body
 uint8_t lastledIndex = 0;
 uint8_t indexRGB = 0;
@@ -294,30 +315,33 @@ String value = "";
 
 // ****** SERVO MOTOR CALIBRATION *********************
 // Servo Positions:  Low,High Range: 150-600 pause witdth2
-int preset[][2] = { { 458, 162 },   // head rotation
-                    { 565, 98 },    // neck top
-                    { 170, 570 },   // neck bottom
-                    { 215, 436 },   // eye right
-                    { 215, 436 },   // eye left
-                    { 350, 150 },   // arm left
-                    { 150, 360 },   // arm right
-                    { 400, 150 },   // eyebrow right
-                    { 400, 150 },   // eyebrow left
-                    { 10, 800 } };  // Door
+int preset[][2] = { { 548, 192 },    // head rotation
+                    { 185, 668 },    // neck top
+                    { 370, 670 },    // neck bottom
+                    { 165, 370 },    // eye right
+                    { 650, 450 },    // eye left
+                    { 520, 245 },    // arm left
+                    { 368, 590 },    // arm right
+                    { 380, 520 },    // Eyebrow Right
+                    { 310, 170 },    // Eyebrow Left
+                    { 680, 430 } };  // Door
+
 // *****************************************************
 
 // Servo Control - Position, Velocity, Acceleration
-// Servo Pins:	     0,   1,   2,   3,   4,   5,   6,   -,   -
+// Servo Pins:	     0,   1,   2,   3,   4,   5,   6,    7,   8, 9,  10,  11
 // Joint Name:	  head,necT,necB,eyeR,eyeL,armL,armR,eyebL,eybR,Dr,motL,motR,
 float curpos[] = { 248, 400, 140, 475, 270, 250, 290, 210, 307, 250, 180, 180 };    // Current position (units)
 float setpos[] = { 248, 400, 140, 475, 270, 250, 290, 210, 307, 250, 0, 0 };        // Required position (units)
 float curvel[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };                            // Current velocity (units/sec)
-float maxvel[] = { 500, 500, 500, 1000, 1000, 500, 500, 500, 500, 500, 250, 250 };  // Max Servo velocity (units/sec)
-float accell[] = { 350, 350, 350, 100, 100, 50, 50, 350, 350, 350, 800, 800 };      // Servo acceleration (units/sec^2)
+float maxvel[] = { 500, 500, 500, 1000, 1000, 500, 500, 600, 600, 500, 250, 250 };  // Max Servo velocity (units/sec)
+float accell[] = { 350, 350, 350, 100, 100, 50, 50, 550, 550, 350, 800, 800 };      // Servo acceleration (units/sec^2)
+
 //float maxvel[] = { 500, 400, 500, 2400, 2400, 600, 600, 400, 400, 250, 250, 500 };  // Max Servo velocity (units/sec)
 //float accell[] = { 350, 300, 480, 1800, 1800, 500, 500, 300, 300, 800, 800, 350 };  // Servo acceleration (units/sec^2)
 
-// BLE Game control Values 0-100
+//-----------------------------------
+// BLE Game controler default Values
 uint8_t neckBottomIndex = S2_NECKB_DPOS;
 uint8_t eyeRHSIndex = S3_EYE_RHS_DPOS;
 uint8_t eyeLHSIndex = S4_EYE_LHS_DPOS;
@@ -325,9 +349,30 @@ uint8_t leftArmIndex = S5_ARM_LHS_DPOS;
 uint8_t rightArmIndex = S6_ARM_RHS_DPOS;
 uint8_t eyebrowRHSIndex = S7_EYEB_RHS_DPOS;
 uint8_t eyebrowLHSIndex = S8_EYEB_LHS_DPOS;
-uint8_t motorDeadZoneIndex = 0;
-int16_t steerOffsetIndex = 0;
+
+bool leftBrowPB = false;
+bool rightBrowPB = false;
+
+bool animationPBFlag = false;
 uint8_t animationIndex = 0;
+uint8_t LastAnimationIndex = 99;
+
+bool steeringoffsetPBFlag = false;
+int16_t steeringIndex = 0;
+int16_t LaststeeringIndex = 99;
+
+bool motorDeadZonePBFlag = false;
+uint8_t motorDeadZoneIndex = 0;
+uint8_t LastmotorDeadZoneIndex = 0;
+
+int16_t lastleftStickX = 50;
+int16_t lastleftStickY = 50;
+int16_t lastleftArm = 50;
+int16_t lastrightArm = 50;
+int16_t lastnecktop = 50;
+int16_t lasteyeLHS = 50;
+int16_t lasteyeRHS = 50;
+
 bool neutral_LHS_JS_X = true;
 bool neutral_LHS_JS_Y = true;
 bool neutral_RHS_JS_X = true;
@@ -376,7 +421,7 @@ void setup() {
 
   // OLED Display
   Oled.begin(&Adafruit128x64, OLED_ADDR);  // 0.96 Inch mono display
-  Oled.displayRemap( DisplayFlip );        // set true or false to flip screen
+  Oled.displayRemap(DisplayFlip);          // set true or false to flip screen
   oledWelcome();
 
   // START the PCF8575 Expander
@@ -386,18 +431,18 @@ void setup() {
       delay(100);
   }
   delay(1000);
-  
+
   pcf.pinMode(PIN_RED_PB, INPUT_PULLUP);    //
   pcf.pinMode(PIN_GRN_PB, INPUT_PULLUP);    //
   pcf.pinMode(PIN_ORG_PB, INPUT_PULLUP);    //
   pcf.pinMode(PIN_WHT_PB, INPUT_PULLUP);    //
   pcf.pinMode(PIN_DFP_BUSY, INPUT_PULLUP);  //
 
-  pcf.pinMode(PIN_RED_LED, OUTPUT);   // active low
-  pcf.pinMode(PIN_GRN_LED, OUTPUT);   //
-  pcf.pinMode(PIN_ORG_LED, OUTPUT);   //
-  pcf.pinMode(PIN_WHT_LED, OUTPUT);   //
-  pcf.pinMode(PIN_BAY_LED, OUTPUT);   // active high
+  pcf.pinMode(PIN_RED_LED, OUTPUT);  // active low
+  pcf.pinMode(PIN_GRN_LED, OUTPUT);  //
+  pcf.pinMode(PIN_ORG_LED, OUTPUT);  //
+  pcf.pinMode(PIN_WHT_LED, OUTPUT);  //
+  pcf.pinMode(PIN_BAY_LED, OUTPUT);  // active high
 
   alloff();  // all PushButton leds off
   delay(1000);
@@ -426,6 +471,7 @@ void setup() {
     myDFPlayer.volumeDown();  // Volume Down
     myDFPlayer.EQ(DFPLAYER_EQ_NORMAL);
     myDFPlayer.outputDevice(DFPLAYER_DEVICE_SD);
+
     soundPlaying = true;
     myDFPlayer.play(playIndex);  //Play the mp3 (file: 2 sounds good)
   }
@@ -519,18 +565,18 @@ void evaluateSerial() {
   // Steering offset
   else if (firstChar == 'S' && number >= -100 && number <= 100) {
     turnOffset = number;  // Steering offset
-    OledSteeringOffset(turnOffset);
+    //OledSteeringOffset(turnOffset);
   }
 
   // Motor Dead Zone
   else if (firstChar == 'O' && number >= 0 && number <= 250) {
     motorDeadzone = int(number);  // Motor deadzone offset
-    OledMotorDeadZone(motorDeadzone);
+    //OledMotorDeadZone(motorDeadzone);
   }
 
   // Animations
   else if (firstChar == 'A') {
-    oledAnimation(number);
+    //oledAnimation(number);
     playAnimation(number);
   }
 
@@ -580,22 +626,25 @@ void evaluateSerial() {
     queue.clear();
     setpos[7] = int(number * 0.01 * (preset[7][1] - preset[7][0]) + preset[7][0]);
 
+    // Door control
   } else if (firstChar == 'D' && !doorFlag) {  // open/close door
-    doorFlag = true;                           // this needs reset after servo moved
-    doorTime = millis();                       // to trap for temp lock on doorFlag
-    if (!number) {
-      //Serial.println("door close");
-      pcf.digitalWrite(PIN_WHT_LED, LOW);  // turn LED on
+    doorFlag = true;                           // wht door led
+    doorTimer = millis();                      // to trap for temp lock on doorFlag
+    if (!number) {                             // number is doorMode = !doorMode;
+      Serial.println("door open");
+      pcf.digitalWrite(PIN_WHT_LED, LOW);   // turn PD LED on
+      pcf.digitalWrite(PIN_BAY_LED, true);  // turn bay light on (active High)
       autoMode = false;
       queue.clear();
-      number = 10;  // close poition
+      number = 0;  // open postion
       setpos[9] = int(number * 0.01 * (preset[9][1] - preset[9][0]) + preset[9][0]);
     } else if (number) {
-      //Serial.println("door open");
-      pcf.digitalWrite(PIN_WHT_LED, LOW);  // turn LED on
+      Serial.println("door close");
+      pcf.digitalWrite(PIN_WHT_LED, LOW);    // turn PB LED on
+      pcf.digitalWrite(PIN_BAY_LED, false);  // turn bay light off
       autoMode = false;
       queue.clear();
-      number = 80;  // open poition
+      number = S9_DOOR_DPOS;  // close poition
       setpos[9] = int(number * 0.01 * (preset[9][1] - preset[9][0]) + preset[9][0]);
     }
 
@@ -613,6 +662,7 @@ void evaluateSerial() {
       pcf.digitalWrite(PIN_RED_LED, LOW);  // turn LED on
     }
   }
+
   // Manual Movements with WASD
   else if (firstChar == 'w') {  // Forward movement
     moveValue = pwmspeed;
@@ -678,6 +728,7 @@ void evaluateSerial() {
   // play sound
   else if ((firstChar == '!') && (!soundPlaying)) {  // Play sound
     if (number == 0) { number = 1; }
+    playSoundTrigger = true;
     playIndex = number;
 
     // Set volume
@@ -812,6 +863,7 @@ void manageServos(float dt) {
   // This helps prevents the motors from overheating
   if (moving) motorTimer = millis();
   else if (millis() - motorTimer >= SERVO_OFF_TIME) {
+    //Serial.println("Servo Off Time");
     //digitalWrite(SERVO_ENABLE_PIN, HIGH);
     for (int i = 0; i < NUMBER_OF_SERVOS; i++) {
       pwm.setPin(i, 0);
@@ -850,7 +902,7 @@ void softStart(animation_t targetPos, int timeMs) {
 }
 
 // -------------------------------------------------------------------
-// Manage the movement of the main motors
+// Manage the movement of the main motors (Tracks)
 //
 // @param  dt  Time in milliseconds since function was last called
 // -------------------------------------------------------------------
@@ -899,7 +951,7 @@ void manageMotors(float dt) {
 #ifdef LED_PIN
   pwm.setPWM(LED_PIN, 0, abs(curvel[NUMBER_OF_SERVOS]) * 2);
 #endif
-  /* // debugging
+  /* // debuggingsoundPlaying
     if (curvel[NUMBER_OF_SERVOS] != oldCurvel) {
       Serial.print("Motor values : ");
       Serial.print(curvel[NUMBER_OF_SERVOS]);
@@ -911,22 +963,20 @@ void manageMotors(float dt) {
 
 //--------------------------------------
 void processSound() {
-  if (playIndex != lastplayIndex) {
-    if (!soundPlaying) {
-      soundPlaying = true;
-      lastplayIndex = playIndex;
-      myDFPlayer.play(playIndex);  // Play mp3 file number on SD card
-      Serial.print("Playing SD file : ");
-      Serial.println(playIndex);
-    }
+  if (playSoundTrigger && !soundPlaying) {
+    soundPlaying = true;
+    lastplayIndex = playIndex;
+    myDFPlayer.play(playIndex);  // Play mp3 file number on SD card
+    Serial.print("Playing SD file : ");
+    Serial.println(playIndex);
+    playSoundTrigger = false;
   }
 }
 
 //-----------------------------------
 void processPB_LEDS() {
-  if (doorFlag && ((millis() - doorTime >= ONESEC))) {
+  if (doorFlag && ((millis() - doorTimer >= ONESEC))) {
     doorFlag = 0;
-    //doorTime = 0;  //not needed
     alloff();
   }
   if (autoModeFlag && ((millis() - autonomousModeTimer >= ONESEC))) {
@@ -968,7 +1018,7 @@ void ProcessBlinkLED_org() {
     stat_LED = !stat_LED;
     LastBlinkLED = millis();
     if (stat_LED) {
-      indexRGB ++;
+      indexRGB++;
       if (indexRGB >= 6) indexRGB = 1;
       if (indexRGB == 1) setRGB(800, 0, 0);      // Red color
       if (indexRGB == 2) setRGB(0, 800, 0);      // Green color
@@ -1007,12 +1057,9 @@ void loop() {
     statusTimer = millis();                           //
     PCF8575_Update();                                 // update expander i/o
     processSound();                                   //
-    Controler();                                      // get xbox control update
+     if (!soundPlaying) {Controler();}                // get xbox control update
     DisplayIdeal();                                   // if display ideal goto home screen
     processPB_LEDS();                                 //
-    //ProcessBlinkLED();                                // hart beat
-    ProcessBlinkLED_org();
-    
-    // checkBatteryLevel();
+    ProcessBlinkLED_org();                            //
   }
 }

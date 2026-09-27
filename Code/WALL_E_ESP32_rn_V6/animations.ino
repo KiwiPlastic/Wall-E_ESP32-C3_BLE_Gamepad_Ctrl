@@ -35,9 +35,8 @@ void playAnimation(int animationNo) {
 
 	switch (animationNo) {
 		case 0:
-			// --- Reset Servo positions ---
+			// --- Reset Servo positions --- done at start up, call any time need to
 			//          time,head,necT,necB,eyeR,eyeL,armL,armR,EybL,EybR,Door
-			//queue.push({ 1000, 90, 95, 10, 10, 10, 10, 10, 10, 10, 10 });
 			queue.push({ 1000,
 			             S0_HEAD_DPOS,
 			             S1_NECKT_DPOS,
@@ -49,12 +48,17 @@ void playAnimation(int animationNo) {
 			             S7_EYEB_RHS_DPOS,
 			             S8_EYEB_LHS_DPOS,
 			             S9_DOOR_DPOS });
+
+			//Serial.println("Play Current");
+      //if (!soundPlaying) {    
+      //OledPlayFile(playIndex);   
+      //playSoundTrigger = true;						 
 			break;
 
 
 
 		case 1:
-			// --- Bootup Eye Sequence ---
+			// --- Movie Bootup Eye Sequence ---
 			//          time,head,necT,necB,eyeR,eyeL,armL,armR,EybL,EybR
 			queue.push({ 2000, 50, 45, 90, 40, 40, 40, 40, 100, 100 });
 			queue.push({ 700, 50, 45, 90, 40, 0, 40, 40, 100, 100 });
@@ -84,6 +88,8 @@ void playAnimation(int animationNo) {
 
 		default:
 			Serial.println(F("Invalid animation requested"));
+			oled_error(animationIndex);
+			animationIndex = 0;
 			break;
 	}
 }

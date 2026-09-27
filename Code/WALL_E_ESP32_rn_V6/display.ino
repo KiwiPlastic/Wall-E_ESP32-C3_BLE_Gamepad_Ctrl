@@ -48,15 +48,14 @@ void oledxbox(int number){
 	if (!number) Oled.print ("OFF");
 	Oled.set1X();
 	displaytime = millis();
-
 }
 
 // Annimation Number
 void oledAnimation(int number){
   Oled.clear();
 	Oled.setFont(TimesNewRoman16_bold);  
-	Oled.setCursor(32, 1);
-	Oled.print(F("Animation"));
+	Oled.setCursor(12, 1);
+	Oled.print(F("ANIMATION"));
 	Oled.set2X();
 	Oled.setCursor(45, 4);
 	Oled.print(F("#"));
@@ -66,14 +65,26 @@ void oledAnimation(int number){
 	displaytime = millis();
 }
 
+// Display Error max animation number
+void oled_error(int number) {
+	Oled.clear();
+	Oled.setFont(TimesNewRoman16_bold);
+	Oled.set2X();
+	Oled.setCursor(20, 0);
+	Oled.print(F("Error"));
+	Oled.setCursor(20, 4);
+	Oled.print(F("Max #"));
+	Oled.set1X();
+	displaytime = millis();
+}
 // Autonomus Servo Mode
 void oledAutonomousMode(bool autoMode){
 	Oled.clear();
 	Oled.setFont(TimesNewRoman16_bold);  
-	Oled.setCursor(28, 1);
-	Oled.print(F("Autonomous"));
-	Oled.setCursor(28, 3);
-	Oled.print(F("Servo Mode"));
+	Oled.setCursor(10, 0);
+	Oled.print(F("AUTONOMUS"));
+	Oled.setCursor(37, 3);
+	Oled.print(F("MODE"));
 	Oled.setCursor(52, 6);
 	if (autoMode) Oled.print("ON");
 	if (!autoMode) Oled.print ("OFF");
@@ -84,8 +95,8 @@ void oledAutonomousMode(bool autoMode){
 void OledSteeringOffset(int number) {
 	Oled.clear();
 	Oled.setFont(TimesNewRoman16_bold);  
-	Oled.setCursor(10, 1);
-	Oled.print(F("Steering Offset"));
+	Oled.setCursor(24, 1);
+	Oled.print(F("STEERING"));
 	Oled.set2X();
 	Oled.setCursor(45, 4);
 	Oled.print(F("#"));
@@ -101,6 +112,21 @@ void OledMotorDeadZone(int number) {
 	Oled.setFont(TimesNewRoman16_bold);  
 	Oled.setCursor(2, 1);
 	Oled.print(F("Motor Dead Zone"));
+	Oled.set2X();
+	Oled.setCursor(35, 4);
+	Oled.print(F("#"));
+	Oled.setCursor(55, 4);
+	Oled.print(number);
+	Oled.set1X();
+	displaytime = millis();
+}
+
+// Play File Number
+void OledPlayFile(int number) {
+	Oled.clear();
+	Oled.setFont(TimesNewRoman16_bold);  
+	Oled.setCursor(2, 1);
+	Oled.print(F("PLAY FILE"));
 	Oled.set2X();
 	Oled.setCursor(35, 4);
 	Oled.print(F("#"));

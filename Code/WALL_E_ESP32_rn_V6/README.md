@@ -3,8 +3,8 @@
  * Upgraded Code by:  Richard Nicholson
  * Email:    richn01@msn.com
  * based on the original project and code from Simon Bluett ( hello@chillibasket.com )
- * Version:  1.0
- * Date:     23 July 2026
+ * Version:  6.0
+ * Date:     18-9-2026
  * Copyright (C) 2020, MIT License
  *
  * HOW TO USE:
@@ -45,10 +45,11 @@ Summary of upgardes
  - Added Bay LED light
  - Added RGB mood LED on PWM module
  - Added different simple Oled display
+ - RGB Led
  
 NOTE: BLE Controler should be OFF on Wall-E Power up
  
-  // BLE Gamepad - Xbox controler - button map
+// BLE Gamepad - Xbox controler - button map     Needs updating 18-9-26
     Tracks turn left/right  Left Stick X (hoz)      
     Tracks forward/back     Left Stick Y (Vert) 
     Head rotation           Right Stick X
@@ -78,8 +79,8 @@ NOTE: BLE Controler should be OFF on Wall-E Power up
 
  // LED Push Buttons on Front
     RED_PB = Play Prev
-    GRN_PB = PlaY Next
-    ORG_PB = Autonomus Servos On/Off
+    GRN_PB = PlaY current
+    ORG_PB = Play next
     WHT_PB = Door Open/Close
 
  //  CLI
@@ -128,6 +129,9 @@ NOTE: BLE Controler should be OFF on Wall-E Power up
     7 Eye Brow Right
     8 Eye Brow Left
     9 Door
+    10
+    11
+    12
     13 RED RGB LED
     14 GRN RGB LED
     15 BLU RGB LED
